@@ -1,5 +1,5 @@
-# ─── ClipForge — Multi-stage Docker image ────────────────────────
-FROM python:3.10-slim AS base
+# ─── ClipForge — Docker image ─────────────────────────────────────
+FROM python:3.10-slim
 
 # System deps: ffmpeg, fonts, opencv libs
 RUN apt-get update && apt-get install -y --no-install-recommends \
