@@ -1,0 +1,26 @@
+# ClipForge — dependencies
+# Install with:  pip install -r requirements.txt
+#
+# You also need ffmpeg + ffprobe on your PATH:
+#   https://ffmpeg.org/download.html
+
+# ── Core ──────────────────────────────────────────────────────────
+numpy>=1.24,<2.1
+# Pick ONE Whisper back-end (faster-whisper recommended for speed):
+faster-whisper>=0.10.0
+# openai-whisper          # alternative – slower but well-tested
+
+# ── Video / Audio ────────────────────────────────────────────────
+imageio-ffmpeg>=0.4.9     # fallback ffmpeg binary
+
+# ── Download ─────────────────────────────────────────────────────
+yt-dlp>=2024.1.0
+
+# ── Speaker diarisation (optional — needs HF_TOKEN) ─────────────
+# Uncomment these if you want --diarize support:
+# pyannote.audio>=3.1
+# torch>=2.0
+# torchaudio>=2.0
+
+# ── Utilities ────────────────────────────────────────────────────
+pydub>=0.25.1

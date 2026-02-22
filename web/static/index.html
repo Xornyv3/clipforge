@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClipForge — AI Video Clipper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- ───── NAV ───── -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">⚡</span> ClipForge
+        </div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection('create')">New Job</a>
+            <a href="#" onclick="showSection('jobs')">My Jobs</a>
+        </div>
+    </nav>
+
+    <!-- ───── HERO ───── -->
+    <section id="hero" class="hero">
+        <h1>Turn podcasts into <span class="gradient-text">viral clips</span></h1>
+        <p class="hero-sub">Paste a YouTube URL. Get TikTok-ready clips with subtitles, music & face-crop — powered by AI.</p>
+    </section>
+
+    <!-- ───── CREATE JOB ───── -->
+    <section id="create" class="section">
+        <div class="card">
+            <h2>Create New Job</h2>
+            <form id="jobForm" onsubmit="submitJob(event)">
+                <!-- Source -->
+                <div class="form-group">
+                    <label for="source_url">YouTube URL <span class="required">*</span></label>
+                    <input type="url" id="source_url" name="source_url" placeholder="https://www.youtube.com/watch?v=...">
+                    <span class="hint">Or upload a file below</span>
+                </div>
+                <div class="form-group">
+                    <label for="source_file">Or Upload Video</label>
+                    <input type="file" id="source_file" name="source_file" accept="video/*,audio/*">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="num_clips">Number of Clips</label>
+                        <input type="number" id="num_clips" name="num_clips" value="5" min="1" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="aspect">Aspect Ratio</label>
+                        <select id="aspect" name="aspect">
+                            <option value="9:16" selected>9:16 — Portrait (TikTok)</option>
+                            <option value="16:9">16:9 — Landscape</option>
+                            <option value="1:1">1:1 — Square</option>
+                            <option value="original">Original</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Music -->
+                <div class="form-group">
+                    <label for="music_url">Background Music (YouTube URL, optional)</label>
+                    <input type="url" id="music_url" name="music_url" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="form-group">
+                    <label for="music_volume">Music Volume: <span id="vol_label">0.10</span></label>
+                    <input type="range" id="music_volume" name="music_volume" min="0" max="1" step="0.05" value="0.10" oninput="document.getElementById('vol_label').textContent=this.value">
+                </div>
+
+                <!-- Advanced toggle -->
+                <details class="advanced-toggle">
+                    <summary>Advanced Settings</summary>
+                    <div class="advanced-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="whisper_model">Whisper Model</label>
+                                <select id="whisper_model" name="whisper_model">
+                                    <option value="tiny">Tiny (fastest)</option>
+                                    <option value="base" selected>Base</option>
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large-v2">Large-v2 (best)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="crf">Video Quality (CRF)</label>
+                                <input type="number" id="crf" name="crf" value="16" min="0" max="51">
+                                <span class="hint">Lower = better quality. 16 recommended.</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="preset">Encoding Speed</label>
+                                <select id="preset" name="preset">
+                                    <option value="fast">Fast</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="slow" selected>Slow (best quality)</option>
+                                    <option value="veryslow">Very Slow</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="keywords">Keywords (boost scoring)</label>
+                                <input type="text" id="keywords" name="keywords" placeholder="AI, startup, viral...">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="min_duration">Min Clip (sec)</label>
+                                <input type="number" id="min_duration" name="min_duration" value="15" min="5" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_duration">Max Clip (sec)</label>
+                                <input type="number" id="max_duration" name="max_duration" value="60" min="10" max="180">
+                            </div>
+                        </div>
+
+                        <h3>Subtitle Style</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sub_font">Font</label>
+                                <input type="text" id="sub_font" name="sub_font" value="Arial">
+                            </div>
+                            <div class="form-group">
+                                <label for="sub_fontsize">Font Size</label>
+                                <input type="number" id="sub_fontsize" name="sub_fontsize" value="64" min="12" max="200">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sub_outline">Outline Width</label>
+                                <input type="number" id="sub_outline" name="sub_outline" value="2" min="0" max="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="sub_shadow">Shadow</label>
+                                <input type="number" id="sub_shadow" name="sub_shadow" value="1" min="0" max="10">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sub_max_words">Max Words/Line</label>
+                                <input type="number" id="sub_max_words" name="sub_max_words" value="5" min="1" max="15">
+                            </div>
+                            <div class="form-group">
+                                <label for="sub_max_chars">Max Chars/Line</label>
+                                <input type="number" id="sub_max_chars" name="sub_max_chars" value="25" min="10" max="80">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_margin_v">Subtitle Vertical Margin</label>
+                            <input type="number" id="sub_margin_v" name="sub_margin_v" value="768" min="0" max="1920">
+                            <span class="hint">Distance from bottom (pixels). 768 = lower third.</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                                <label><input type="checkbox" id="color_grade" name="color_grade" checked> Color Grade</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label><input type="checkbox" id="subtitles" name="subtitles" checked> Subtitles</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label><input type="checkbox" id="sub_bold" name="sub_bold" checked> Bold Text</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label><input type="checkbox" id="strip_commas" name="strip_commas" checked> Strip Commas</label>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="btn-text">⚡ Generate Clips</span>
+                    <span class="btn-loading hidden">Processing...</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ───── JOB LIST ───── -->
+    <section id="jobs" class="section hidden">
+        <div class="card">
+            <div class="card-header">
+                <h2>My Jobs</h2>
+                <button class="btn btn-sm" onclick="loadJobs()">↻ Refresh</button>
+            </div>
+            <div id="jobList" class="job-list">
+                <p class="muted">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── JOB DETAIL ───── -->
+    <section id="detail" class="section hidden">
+        <div class="card">
+            <button class="btn btn-sm btn-back" onclick="showSection('jobs')">← Back to Jobs</button>
+            <div id="jobDetail"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>ClipForge &mdash; AI-powered video clipping &bull; Built with FastAPI, Celery &amp; Whisper</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

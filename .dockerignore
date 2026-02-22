@@ -1,0 +1,15 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+uploads/
+outputs/
+tmp_work/
+clips_output/
+.cache/
+*.egg-info/
+dist/
+build/
+node_modules/
+.venv/
+venv/

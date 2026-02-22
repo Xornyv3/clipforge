@@ -1,0 +1,28 @@
+# ─── Render.com Blueprint (Infrastructure-as-Code) ───────────────
+# Deploy:  https://render.com/deploy → connect your Git repo
+#
+# This creates a single web service that runs both the API server
+# and processes jobs in background threads (no Redis/Celery needed).
+
+services:
+  - type: web
+    name: clipforge
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: USE_CELERY
+        value: "false"
+      - key: CLIPFORGE_UPLOAD_DIR
+        value: /tmp/clipforge/uploads
+      - key: CLIPFORGE_OUTPUT_DIR
+        value: /tmp/clipforge/outputs
+      - key: CLIPFORGE_WORK_DIR
+        value: /tmp/clipforge/work
+      - key: CLIPFORGE_PUBLIC_URL
+        value: https://clipforge.onrender.com
+      - key: CLIPFORGE_MAX_UPLOAD_MB
+        value: "200"
+      - key: PORT
+        value: "8000"
+    healthCheckPath: /api/jobs

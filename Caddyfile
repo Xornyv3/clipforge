@@ -1,0 +1,34 @@
+# ─── ClipForge — Caddy reverse proxy config ──────────────────────
+# Used in production to handle HTTPS + serve static files efficiently.
+# Replace YOUR_DOMAIN with your actual domain.
+#
+# Usage with Docker:
+#   1. Add a caddy service to docker-compose.yml
+#   2. Mount this file as /etc/caddy/Caddyfile
+#
+# Or install Caddy on the host:
+#   sudo caddy run --config Caddyfile
+
+YOUR_DOMAIN {
+    # API + WebSocket
+    reverse_proxy /api/* web:8000
+    reverse_proxy /static/* web:8000
+
+    # Frontend SPA
+    reverse_proxy web:8000
+
+    # File size limit for uploads
+    request_body {
+        max_size 500MB
+    }
+
+    # Gzip
+    encode gzip
+
+    # Security headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}

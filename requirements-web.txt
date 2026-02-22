@@ -1,0 +1,20 @@
+# ClipForge Web — All dependencies
+# Install with:  pip install -r requirements-web.txt
+
+# ── Core pipeline ────────────────────────────────────────────────
+numpy>=1.24,<2.1
+faster-whisper>=0.10.0
+imageio-ffmpeg>=0.4.9
+yt-dlp>=2024.1.0
+opencv-python>=4.8.0
+pydub>=0.25.1
+
+# ── Web / API ────────────────────────────────────────────────────
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.9
+pydantic>=2.0
+
+# ── Task queue ───────────────────────────────────────────────────
+celery[redis]>=5.3.0
+redis>=5.0.0
