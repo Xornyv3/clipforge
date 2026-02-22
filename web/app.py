@@ -45,10 +45,11 @@ app.add_middleware(
 )
 
 
-# ── Health check (pinged by UptimeRobot every 5 min to prevent spin-down) ────
-@app.get("/healthz")
-async def healthz():
-    return {"status": "ok"}
+# ── Health check (for UptimeRobot keep-alive) ────────────────────────────────
+
+@app.get("/api/health")
+async def health():
+    return {"status": "ok", "service": "clipforge"}
 
 
 # ── API Routes ───────────────────────────────────────────────────────────────
