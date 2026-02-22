@@ -45,6 +45,12 @@ app.add_middleware(
 )
 
 
+# ── Health check (pinged by UptimeRobot every 5 min to prevent spin-down) ────
+@app.get("/healthz")
+async def healthz():
+    return {"status": "ok"}
+
+
 # ── API Routes ───────────────────────────────────────────────────────────────
 
 @app.post("/api/jobs", response_model=JobResponse)
