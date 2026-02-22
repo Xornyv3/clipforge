@@ -1,10 +1,9 @@
 # ─── ClipForge — Docker image ─────────────────────────────────────
 FROM python:3.10-slim
 
-# System deps: ffmpeg, fonts, opencv libs
+# System deps: ffmpeg, fonts, glib (opencv-headless needs no OpenGL)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    libgl1-mesa-glx \
     libglib2.0-0 \
     fonts-liberation \
     fonts-dejavu-core \
