@@ -12,9 +12,7 @@ services:
     runtime: python
     plan: free
     repo: https://github.com/Xornyv3/clipforge
-    buildCommand: |
-      pip install -r requirements-web.txt
-      python -c "from faster_whisper import WhisperModel; WhisperModel('tiny', device='cpu', compute_type='int8')" || true
+    buildCommand: pip install -r requirements-web.txt
     startCommand: uvicorn web.app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: USE_CELERY
