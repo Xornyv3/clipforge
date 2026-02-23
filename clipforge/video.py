@@ -67,7 +67,11 @@ _CINE_GRADE = (
 def _ffmpeg() -> str:
     path = shutil.which("ffmpeg")
     if not path:
-        raise FileNotFoundError("ffmpeg not found on PATH")
+        try:
+            import imageio_ffmpeg
+            path = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception:
+            raise FileNotFoundError("ffmpeg not found on PATH and imageio-ffmpeg unavailable")
     return path
 
 

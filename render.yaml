@@ -9,10 +9,13 @@
 services:
   - type: web
     name: clipforge
-    runtime: docker
+    runtime: python
     plan: free
     repo: https://github.com/Xornyv3/clipforge
-    dockerfilePath: ./Dockerfile
+    buildCommand: |
+      pip install -r requirements-web.txt
+      python -c "from faster_whisper import WhisperModel; WhisperModel('tiny', device='cpu', compute_type='int8')" || true
+    startCommand: uvicorn web.app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: USE_CELERY
         value: "false"
@@ -26,6 +29,6 @@ services:
         sync: false
       - key: CLIPFORGE_MAX_UPLOAD_MB
         value: "200"
-      - key: PORT
-        value: "10000"
-    healthCheckPath: /api/jobs
+      - key: PYTHON_VERSION
+        value: "3.10.0"
+    healthCheckPath: /api/health
