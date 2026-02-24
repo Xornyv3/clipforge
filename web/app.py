@@ -47,7 +47,8 @@ app.add_middleware(
 
 # ── Health check (for UptimeRobot keep-alive) ────────────────────────────────
 
-@app.api_route("/api/health", methods=["GET", "HEAD"])
+@app.get("/api/health")
+@app.head("/api/health")
 async def health():
     return {"status": "ok", "service": "clipforge"}
 
