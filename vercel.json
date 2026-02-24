@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://clipforge.onrender.com/api/:path*"
+      "destination": "https://clipforge-kkt1.onrender.com/api/:path*"
     },
     {
       "source": "/static/:path*",
